@@ -1,4 +1,4 @@
-from game import Game, Board, Square
+from game import Game, Board, Square, GameStatus
 from typing import List
 
 
@@ -44,6 +44,12 @@ class TaflGamePrinter:
         Square.DEFENDER_KING: 'O',
     }
 
+    status_names = {
+        GameStatus.IN_PROGRESS: 'in progress',
+        GameStatus.ATTACKERS_WIN: 'attackers win',
+        GameStatus.DEFENDERS_WIN: 'defenders win',
+    }
+
     @staticmethod
     def str(g: Game) -> str:
         s = '    1 2 3 4 5 6 7 8 9\n'
@@ -57,8 +63,9 @@ class TaflGamePrinter:
             h = chr(ord(h) + 1)
         s += '  ' + '=' * 21 + '\n'
         s += '    1 2 3 4 5 6 7 8 9\n'
-
         turn = 'attackers (x)' if g.turn_attackers else 'defenders (o)'
+        if g.status != GameStatus.IN_PROGRESS:
+            turn = TaflGamePrinter.status_names[g.status]
         last_move = str(g.history[-1]) if len(g.history) else 'none'
         s += f'turn: {turn}, last move: {last_move}'
 

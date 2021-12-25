@@ -46,6 +46,11 @@ class Coord:
             if coord != b:
                 yield coord
 
+    @staticmethod
+    def third_in_a_row(a: CoordT, b: CoordT) -> CoordT:
+        x = b.x - a.x
+        y = b.y - a.y
+        return Coord(b.x + x, b.y + y)
 
 @dataclass
 class Board:
@@ -56,6 +61,26 @@ class Board:
 
     def __setitem__(self, coord: Coord, sq: Square) -> None:
         self.board[coord.x][coord.y] = sq
+
+    @property
+    def size(self):
+        return len(self.board)
+
+    def is_edge(self, coord: Coord):
+        return coord.x == 0 or coord.y == 0 \
+               or coord.x ==self.size - 1 or coord.y == self.size - 1
+
+    def is_valid(self, coord: Coord):
+        return 0 <= coord.x < self.size and 0 <= coord.y < self.size
+
+    def neighbors(self, coord: Coord) -> List[Coord]:
+        raw = [
+            Coord(coord.x + 1, coord.y),
+            Coord(coord.x - 1, coord.y),
+            Coord(coord.x, coord.y + 1),
+            Coord(coord.x, coord.y - 1),
+        ]
+        return [c for c in raw if self.is_valid(c)]
 
 
 @dataclass
@@ -71,11 +96,18 @@ class Move:
         return str(self.src) + str(self.dst)
 
 
+class GameStatus(Enum):
+    IN_PROGRESS = 1
+    ATTACKERS_WIN = 2
+    DEFENDERS_WIN = 3
+
+
 @dataclass
 class Game:
     board: Board
     turn_attackers: bool
     history: List[Move] = field(default_factory=list)
+    status: GameStatus = GameStatus.IN_PROGRESS
 
     def check_move_is_valid(self, move: Move) -> None:
         if self.board[move.src] == Square.EMPTY:
@@ -92,14 +124,50 @@ class Game:
         if not self.turn_attackers and self.board[move.src].is_attacker:
             raise IllegalMoveException(f"{move}: it is defender's turn")
 
+    def process_move(self, move: Move):
+        self.board[move.dst], self.board[move.src] = self.board[move.src], self.board[move.dst]
+
+    def fetch_captures(self, move: Move) -> List[Coord]:
+        captures = []
+        is_attacker = self.board[move.dst].is_attacker
+        for c in self.board.neighbors(move.dst):
+            if self.board[c] == Square.EMPTY or self.board[c].is_attacker == is_attacker:
+                continue
+            third = Coord.third_in_a_row(move.dst, c)
+            if not self.board.is_valid(third):
+                captures.append(c)
+            elif self.board[third] != Square.EMPTY and self.board[third].is_attacker == is_attacker:
+                captures.append(c)
+        return captures
+
+    def evaluate_endgame_conditions(self, move: Move, captures: List[Coord]):
+        for coord in captures:
+            if self.board[coord] == Square.DEFENDER_KING:
+                self.status = GameStatus.ATTACKERS_WIN
+            self.board[coord] = Square.EMPTY
+
+        if self.board[move.dst] == Square.DEFENDER_KING:
+            if self.board.is_edge(move.dst):
+                self.status = GameStatus.DEFENDERS_WIN
+
+    def process_captures(self, captures: List[Coord]):
+        for coord in captures:
+            self.board[coord] = Square.EMPTY
+
     def move(self, move_str: str) -> None:
+        if self.status != GameStatus.IN_PROGRESS:
+            raise IllegalMoveException("Game is over")
+
         move = Move.from_str(move_str)
         self.check_move_is_valid(move)
-        self.board[move.dst], self.board[move.src] = self.board[move.src], self.board[move.dst]
-        # todo: check captures
-        # todo: check endgame condition
+        self.process_move(move)
         self.turn_attackers = not self.turn_attackers
         self.history.append(move)
+
+        captures = self.fetch_captures(move)
+        self.evaluate_endgame_conditions(move, captures)
+        if self.status == GameStatus.IN_PROGRESS:
+            self.process_captures(captures)
 
 
 class IllegalMoveException(Exception):
