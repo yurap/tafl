@@ -52,6 +52,7 @@ class Coord:
         y = b.y - a.y
         return Coord(b.x + x, b.y + y)
 
+
 @dataclass
 class Board:
     board: List[List[Square]]
@@ -68,7 +69,7 @@ class Board:
 
     def is_edge(self, coord: Coord):
         return coord.x == 0 or coord.y == 0 \
-               or coord.x ==self.size - 1 or coord.y == self.size - 1
+               or coord.x == self.size - 1 or coord.y == self.size - 1
 
     def is_valid(self, coord: Coord):
         return 0 <= coord.x < self.size and 0 <= coord.y < self.size
