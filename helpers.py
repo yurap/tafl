@@ -58,7 +58,7 @@ class TaflGamePrinter:
         s += '  ' + '=' * 21 + '\n'
         s += '    1 2 3 4 5 6 7 8 9\n'
 
-        turn = 'attackers (x)' if g.turn_black else 'defenders (o)'
+        turn = 'attackers (x)' if g.turn_attackers else 'defenders (o)'
         last_move = str(g.history[-1]) if len(g.history) else 'none'
         s += f'turn: {turn}, last move: {last_move}'
 

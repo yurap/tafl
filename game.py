@@ -10,7 +10,7 @@ class Square(Enum):
     DEFENDER_KING = 4
 
     @property
-    def is_black(self) -> bool:
+    def is_attacker(self) -> bool:
         return self == Square.ATTACKER_PAWN
 
 
@@ -74,7 +74,7 @@ class Move:
 @dataclass
 class Game:
     board: Board
-    turn_black: bool
+    turn_attackers: bool
     history: List[Move] = field(default_factory=list)
 
     def check_move_is_valid(self, move: Move) -> None:
@@ -87,10 +87,10 @@ class Game:
         for coord in Coord.squares_between(move.src, move.dst):
             if self.board[coord] != Square.EMPTY:
                 raise IllegalMoveException(f"{move}: cannot jump over {coord}")
-        if self.turn_black and not self.board[move.src].is_black:
-            raise IllegalMoveException(f"{move}: it is black's turn")
-        if not self.turn_black and self.board[move.src].is_black:
-            raise IllegalMoveException(f"{move}: it is white's turn")
+        if self.turn_attackers and not self.board[move.src].is_attacker:
+            raise IllegalMoveException(f"{move}: it is attacker's turn")
+        if not self.turn_attackers and self.board[move.src].is_attacker:
+            raise IllegalMoveException(f"{move}: it is defender's turn")
 
     def move(self, move_str: str) -> None:
         move = Move.from_str(move_str)
@@ -98,7 +98,7 @@ class Game:
         self.board[move.dst], self.board[move.src] = self.board[move.src], self.board[move.dst]
         # todo: check captures
         # todo: check endgame condition
-        self.turn_black = not self.turn_black
+        self.turn_attackers = not self.turn_attackers
         self.history.append(move)
 
 
