@@ -5,9 +5,9 @@ from typing import List
 class TaflGameCreator:
     square_types = {
         ' ': Square.EMPTY,
-        'b': Square.BLACK_PAWN,
-        'w': Square.WHITE_PAWN,
-        'K': Square.WHITE_KING,
+        'x': Square.ATTACKER_PAWN,
+        'o': Square.DEFENDER_PAWN,
+        'O': Square.DEFENDER_KING,
     }
 
     @staticmethod
@@ -20,15 +20,15 @@ class TaflGameCreator:
     @staticmethod
     def create_basic() -> Game:
         return TaflGameCreator.create([
-            '   bbb   ',
-            '    b    ',
-            '    w    ',
-            'b   w   b',
-            'bbwwKwwbb',
-            'b   w   b',
-            '    w    ',
-            '    b    ',
-            '   bbb   ',
+            '   xxx   ',
+            '    x    ',
+            '    o    ',
+            'x   o   x',
+            'xxooOooxx',
+            'x   o   x',
+            '    o    ',
+            '    x    ',
+            '   xxx   ',
         ], True)
 
     @staticmethod
@@ -39,9 +39,9 @@ class TaflGameCreator:
 class TaflGamePrinter:
     square_names = {
         Square.EMPTY: ' ',
-        Square.BLACK_PAWN: 'x',
-        Square.WHITE_PAWN: 'o',
-        Square.WHITE_KING: 'O',
+        Square.ATTACKER_PAWN: 'x',
+        Square.DEFENDER_PAWN: 'o',
+        Square.DEFENDER_KING: 'O',
     }
 
     @staticmethod

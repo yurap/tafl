@@ -5,13 +5,13 @@ from enum import Enum
 
 class Square(Enum):
     EMPTY = 1
-    BLACK_PAWN = 2
-    WHITE_PAWN = 3
-    WHITE_KING = 4
+    ATTACKER_PAWN = 2
+    DEFENDER_PAWN = 3
+    DEFENDER_KING = 4
 
     @property
     def is_black(self) -> bool:
-        return self == Square.BLACK_PAWN
+        return self == Square.ATTACKER_PAWN
 
 
 CoordT = TypeVar('CoordT', bound='Coord')
