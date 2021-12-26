@@ -159,6 +159,9 @@ class Game:
         if self.status != GameStatus.IN_PROGRESS:
             raise IllegalMoveException("Game is over")
 
+        if len(move_str) != 4:
+            raise IllegalMoveException("Move must consist of 4 characters")
+
         move = Move.from_str(move_str)
         self.check_move_is_valid(move)
         self.process_move(move)

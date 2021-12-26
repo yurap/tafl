@@ -1,5 +1,7 @@
 from game import Game, Board, Square, GameStatus
 from typing import List
+import random
+import string
 
 
 class TaflGameCreator:
@@ -67,10 +69,15 @@ class TaflGamePrinter:
         if g.status != GameStatus.IN_PROGRESS:
             turn = TaflGamePrinter.status_names[g.status]
         last_move = str(g.history[-1]) if len(g.history) else 'none'
-        s += f'turn: {turn}, last move: {last_move}'
+        s += f'turn: {turn}\nlast move: {last_move}'
 
         return s
 
     @staticmethod
     def square_alias(sq: Square):
         return TaflGamePrinter.square_names[sq]
+
+
+def get_random_string(length):
+    letters = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters) for i in range(length))
