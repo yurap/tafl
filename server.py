@@ -64,10 +64,13 @@ class Lobby:
     """manages people who are waiting to get paired"""
     players: List[PlayerRecord] = field(default_factory=list)
     
-    def empty(self):
-        return len(self.players) == 0
+    def can_be_paired(self, p: PlayerRecord) -> bool:
+        for waiting_player in self.players:
+            if p.chat != waiting_player.chat:
+                return True
+        return False
 
-    def add(self, p: PlayerRecord):
+    def add(self, p: PlayerRecord) -> None:
         self.players.append(p)
 
     def pick_one(self) -> PlayerRecord:
@@ -95,11 +98,10 @@ class Server:
             raise GameAlreadyExistsException('You need to finish existing game first!')
 
         p = PlayerRecord(chat, name)
-        if self.lobby.empty():
+        if not self.lobby.can_be_paired(p):
             self.lobby.add(p)
             return None
-        opp = self.lobby.pick_one()
-        return self.create_game(p, opp)
+        return self.create_game(p, self.lobby.pick_one())
 
     def generate_game_id(self) -> GameId:
         game_id = None

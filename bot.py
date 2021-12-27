@@ -46,8 +46,9 @@ def command_help(update, _):
         f'Attackers try to surround the king of defenders (O), and '
         f'the king tries to escape to any edge of the board.\n\n'
         f'All pieces move only vertically or horizontally and cannot jump over each other.\n\n'
-        f"A piece is captured if it is surrounded from two opposite sides via opponent's move/\n\n"
-        f"When it's your turn type the coordinates of src and dst squares to make a move, e.g. d1d2"
+        f"A piece is captured if it is surrounded from two opposite sides via opponent's move.\n\n"
+        f"When it's your turn -- type the coordinates of src and dst squares to make a move, e.g. d1d2\n\n"
+        f"Use /new to start a new game"
     )
 
 
@@ -65,9 +66,8 @@ def process(update, _):
 
 
 def error(update, context):
-    # fixme: we really shouldn't send the error message to the user long-term =)
     logger.error('Update "%s" caused error "%s"', update, context.error)
-    update.message.reply_text(str(context.error))
+    update.message.reply_text('Oops, something went wrong :(')
 
 
 if __name__ == '__main__':
@@ -77,6 +77,6 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler("new", command_new))
     dp.add_handler(CommandHandler("abort", command_abort))
     dp.add_handler(MessageHandler(Filters.text, process))
-    dp.add_error_handler(error)
+    # dp.add_error_handler(error)
     updater.start_polling()
     updater.idle()
