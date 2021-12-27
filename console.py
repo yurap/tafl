@@ -1,7 +1,7 @@
 """
 Use this to play tablut against yourself in console
 """
-from helpers import TaflGameCreator, TaflGamePrinter
+from helpers import TablutGameCreator, TablutGamePrinter
 from cmd import Cmd
 import os
 
@@ -20,8 +20,8 @@ class GameShell(Cmd):
 
     def do_new(self, _):
         clear_console()
-        self.game = TaflGameCreator.create_basic()
-        print(TaflGamePrinter.str(self.game))
+        self.game = TablutGameCreator.create_basic()
+        print(TablutGamePrinter.str(self.game))
 
     def default(self, move):
         clear_console()
@@ -29,7 +29,7 @@ class GameShell(Cmd):
             self.game.move(move)
         except Exception as e:
             print('Oops: ' + str(e))
-        print(TaflGamePrinter.str(self.game))
+        print(TablutGamePrinter.str(self.game))
 
     @staticmethod
     def do_exit(_):

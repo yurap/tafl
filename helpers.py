@@ -4,7 +4,7 @@ import random
 import string
 
 
-class TaflGameCreator:
+class TablutGameCreator:
     square_types = {
         ' ': Square.EMPTY,
         'x': Square.ATTACKER_PAWN,
@@ -16,12 +16,12 @@ class TaflGameCreator:
     def create(pos: List[str], turn_back: bool) -> Tablut:
         b = []
         for horizontal in pos:
-            b.append([TaflGameCreator.square(c) for c in horizontal])
+            b.append([TablutGameCreator.square(c) for c in horizontal])
         return Tablut(Board(b), turn_back)
 
     @staticmethod
     def create_basic() -> Tablut:
-        return TaflGameCreator.create([
+        return TablutGameCreator.create([
             '   xxx   ',
             '    x    ',
             '    o    ',
@@ -35,10 +35,10 @@ class TaflGameCreator:
 
     @staticmethod
     def square(c: str) -> Square:
-        return TaflGameCreator.square_types[c]
+        return TablutGameCreator.square_types[c]
 
 
-class TaflGamePrinter:
+class TablutGamePrinter:
     square_names = {
         Square.EMPTY: ' ',
         Square.ATTACKER_PAWN: 'x',
@@ -60,14 +60,14 @@ class TaflGamePrinter:
         for v in g.board.board:
             s += h + ' | '
             for sq in v:
-                s += TaflGamePrinter.square_alias(sq) + ' '
+                s += TablutGamePrinter.square_alias(sq) + ' '
             s += '| ' + h + '\n'
             h = chr(ord(h) + 1)
         s += '  ' + '=' * 21 + '\n'
         s += '    1 2 3 4 5 6 7 8 9\n'
         turn = 'attackers (x)' if g.turn_attackers else 'defenders (o)'
         if g.status != GameStatus.IN_PROGRESS:
-            turn = TaflGamePrinter.status_names[g.status]
+            turn = TablutGamePrinter.status_names[g.status]
         last_move = str(g.history[-1]) if len(g.history) else 'none'
         s += f'turn: {turn}\nlast move: {last_move}'
 
@@ -75,7 +75,7 @@ class TaflGamePrinter:
 
     @staticmethod
     def square_alias(sq: Square):
-        return TaflGamePrinter.square_names[sq]
+        return TablutGamePrinter.square_names[sq]
 
 
 def get_random_string(length):

@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from tablut import Tablut, GameStatus
 from typing import List, MutableMapping, Optional
-from helpers import TaflGamePrinter, TaflGameCreator, get_random_string
+from helpers import TablutGamePrinter, TablutGameCreator, get_random_string
 from random import choice
 
 
@@ -26,7 +26,7 @@ class GameRecord:
 
     @property
     def board(self) -> str:
-        return TaflGamePrinter.str(self.game)
+        return TablutGamePrinter.str(self.game)
 
     @property
     def active(self) -> bool:
@@ -115,7 +115,7 @@ class Server:
             self.generate_game_id(),
             p1 if first_is_attacker else p2,
             p2 if first_is_attacker else p1,
-            TaflGameCreator.create_basic(),
+            TablutGameCreator.create_basic(),
         )
         self.games[g.id] = g
         self.chats_to_games[p1.chat] = g.id
