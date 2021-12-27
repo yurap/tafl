@@ -1,4 +1,4 @@
-from game import Game, Board, Square, GameStatus
+from tablut import Tablut, Board, Square, GameStatus
 from typing import List
 import random
 import string
@@ -13,14 +13,14 @@ class TaflGameCreator:
     }
 
     @staticmethod
-    def create(pos: List[str], turn_back: bool) -> Game:
+    def create(pos: List[str], turn_back: bool) -> Tablut:
         b = []
         for horizontal in pos:
             b.append([TaflGameCreator.square(c) for c in horizontal])
-        return Game(Board(b), turn_back)
+        return Tablut(Board(b), turn_back)
 
     @staticmethod
-    def create_basic() -> Game:
+    def create_basic() -> Tablut:
         return TaflGameCreator.create([
             '   xxx   ',
             '    x    ',
@@ -53,7 +53,7 @@ class TaflGamePrinter:
     }
 
     @staticmethod
-    def str(g: Game) -> str:
+    def str(g: Tablut) -> str:
         s = '    1 2 3 4 5 6 7 8 9\n'
         s += '  ' + '=' * 21 + '\n'
         h = 'a'

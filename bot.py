@@ -3,10 +3,10 @@ import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from secrets import TOKEN
 from dataclasses import dataclass
-from game_server import GameServer
+from server import Server
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
-games = GameServer()
+games = Server()
 updater = Updater(TOKEN, use_context=True)
 
 

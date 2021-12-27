@@ -104,7 +104,7 @@ class GameStatus(Enum):
 
 
 @dataclass
-class Game:
+class Tablut:
     board: Board
     turn_attackers: bool
     history: List[Move] = field(default_factory=list)

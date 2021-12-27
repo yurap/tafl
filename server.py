@@ -1,6 +1,6 @@
 """Manages games and pairings"""
 from dataclasses import dataclass, field
-from game import Game, GameStatus
+from tablut import Tablut, GameStatus
 from typing import List, MutableMapping, Optional
 from helpers import TaflGamePrinter, TaflGameCreator, get_random_string
 from random import choice
@@ -22,7 +22,7 @@ class GameRecord:
     id: GameId
     attackers: PlayerRecord
     defenders: PlayerRecord
-    game: Game
+    game: Tablut
 
     @property
     def board(self) -> str:
@@ -77,7 +77,8 @@ class Lobby:
 
 
 @dataclass
-class GameServer:
+class Server:
+    """Manages games in progress"""
     games: MutableMapping[GameId, GameRecord] = field(default_factory=dict)
     chats_to_games: MutableMapping[ChatId, GameId] = field(default_factory=dict)
     lobby: Lobby = Lobby()

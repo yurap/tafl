@@ -1,5 +1,5 @@
 """
-Console version of tablut, you can use this script to play here against yourself
+Use this to play tablut against yourself in console
 """
 from helpers import TaflGameCreator, TaflGamePrinter
 from cmd import Cmd
