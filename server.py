@@ -110,7 +110,7 @@ class Server:
         return game_id
 
     def create_game(self, p1: PlayerRecord, p2: PlayerRecord) -> GameRecord:
-        first_is_attacker = choice([0, 1]) == 1
+        first_is_attacker = bool(choice([0, 1]))
         g = GameRecord(
             self.generate_game_id(),
             p1 if first_is_attacker else p2,

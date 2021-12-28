@@ -54,17 +54,17 @@ class TablutGamePrinter:
 
     @staticmethod
     def str(g: Tablut) -> str:
-        s = '    1 2 3 4 5 6 7 8 9\n'
+        s = '    a b c d e f g h i\n'
         s += '  ' + '=' * 21 + '\n'
-        h = 'a'
+        h = 9
         for v in g.board.board:
-            s += h + ' | '
+            s += str(h) + ' | '
             for sq in v:
                 s += TablutGamePrinter.square_alias(sq) + ' '
-            s += '| ' + h + '\n'
-            h = chr(ord(h) + 1)
+            s += '| ' + str(h) + '\n'
+            h -= 1
         s += '  ' + '=' * 21 + '\n'
-        s += '    1 2 3 4 5 6 7 8 9\n'
+        s += '    a b c d e f g h i\n'
         turn = 'attackers (x)' if g.turn_attackers else 'defenders (o)'
         if g.status != GameStatus.IN_PROGRESS:
             turn = TablutGamePrinter.status_names[g.status]

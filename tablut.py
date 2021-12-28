@@ -29,7 +29,7 @@ class Coord:
     def from_str(coord_str: str) -> CoordT:
         x, y = coord_str
         if 'a' <= x <= 'i' and '1' <= y <= '9':
-            return Coord(ord(x) - ord('a'), ord(y) - ord('1'))
+            return Coord(8 - (ord(y) - ord('1')), ord(x) - ord('a'))
         raise IllegalSquareException(f"square {coord_str} is incorrect")
 
     @staticmethod
@@ -92,9 +92,6 @@ class Move:
     @staticmethod
     def from_str(move_str: str):
         return Move(Coord.from_str(move_str[0:2]), Coord.from_str(move_str[2:4]))
-
-    def __str__(self):
-        return str(self.src) + str(self.dst)
 
 
 class GameStatus(Enum):
@@ -166,7 +163,7 @@ class Tablut:
         self.check_move_is_valid(move)
         self.process_move(move)
         self.turn_attackers = not self.turn_attackers
-        self.history.append(move)
+        self.history.append(move_str)
 
         captures = self.fetch_captures(move)
         self.evaluate_endgame_conditions(move, captures)

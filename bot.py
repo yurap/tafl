@@ -39,6 +39,7 @@ def command_start(update, _):
 
 
 def command_help(update, _):
+    logger.info('update')
     update.message.reply_text(
         f'Tablut is an ancient game of viking chess.\n\n'
         f'It is played on a 9x9 board with two teams: attackers (x) and defenders (o).\n\n'
@@ -66,7 +67,7 @@ def process(update, _):
 
 def error(update, context):
     logger.error('Update "%s" caused error "%s"', update, context.error)
-    update.message.reply_text('Oops, something went wrong :(')
+    update.message.reply_text(str(context.error))
 
 
 if __name__ == '__main__':
